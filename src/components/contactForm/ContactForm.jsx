@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { nanoid } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContactsList } from 'redux/selectors';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 
 import { SlUserFollow } from 'react-icons/sl';
 import Notiflix from 'notiflix';
@@ -18,7 +18,7 @@ export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
-  const contactsList = useSelector(getContactsList);
+  const { items, isLoading, error } = useSelector(getContactsList);
 
   const handleInputChange = event => {
     const { name, value } = event.currentTarget;
@@ -38,13 +38,12 @@ export default function ContactForm() {
     event.preventDefault();
 
     const contact = {
-      id: nanoid(),
       name,
       number,
     };
 
     if (
-      contactsList.some(
+      items.some(
         ({ name }) => name.toLowerCase() === contact.name.toLowerCase()
       )
     ) {
