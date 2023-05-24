@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { getContactsList, getContactsFilter } from 'redux/selectors';
-import { fetchContacts } from 'redux/operations';
-// import { deleteContact } from 'redux/contactsSlice';
+import { fetchContacts, deleteContact } from 'redux/operations';
 
+import IsLoading from 'components/IsLoading';
+import Error from 'components/Error';
 import { RiDeleteBin3Line } from 'react-icons/ri';
 import { BsPersonCircle } from 'react-icons/bs';
 import { GiRotaryPhone } from 'react-icons/gi';
@@ -26,38 +27,45 @@ export default function ContactsList() {
   }, [dispatch]);
 
   const filteredContacts = items.filter(
-    ({ name, number }) =>
+    ({ name, phone }) =>
       name.toLowerCase().includes(filteredValue.toLowerCase()) ||
-      number.includes(filteredValue)
+      phone.includes(filteredValue)
   );
 
-  // const handleDeleteContact = id => {
-  //   dispatch(deleteContact(id));
-  // };
+  const handleDeleteContact = id => {
+    dispatch(deleteContact(id));
+    console.log(id);
+  };
 
   return (
-    <ContactList>
-      {filteredContacts.map(({ id, name, phone }) => {
-        return (
-          <ContactItem key={id}>
-            <ContactCard>
-              <ContactInfo>
-                <BsPersonCircle />
-                {name}
-              </ContactInfo>
-              <ContactInfo>
-                <GiRotaryPhone />
-                {phone}
-              </ContactInfo>
-            </ContactCard>
+    <>
+      {isLoading && <IsLoading />}
+      {error && <Error />}
+      {!isLoading && !error && (
+        <ContactList>
+          {filteredContacts.map(({ id, name, phone }) => {
+            return (
+              <ContactItem key={id}>
+                <ContactCard>
+                  <ContactInfo>
+                    <BsPersonCircle />
+                    {name}
+                  </ContactInfo>
+                  <ContactInfo>
+                    <GiRotaryPhone />
+                    {phone}
+                  </ContactInfo>
+                </ContactCard>
 
-            <DeleteBtn>
-              <RiDeleteBin3Line fill="currentColor" size="1.2rem" />
-              Delete
-            </DeleteBtn>
-          </ContactItem>
-        );
-      })}
-    </ContactList>
+                <DeleteBtn onClick={() => handleDeleteContact(id)}>
+                  <RiDeleteBin3Line fill="currentColor" size="1.2rem" />
+                  Delete
+                </DeleteBtn>
+              </ContactItem>
+            );
+          })}
+        </ContactList>
+      )}
+    </>
   );
 }

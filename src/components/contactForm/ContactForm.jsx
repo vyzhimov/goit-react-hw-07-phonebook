@@ -17,7 +17,7 @@ export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
-  const { items, isLoading, error } = useSelector(getContactsList);
+  const { items } = useSelector(getContactsList);
 
   const handleInputChange = event => {
     const { name, value } = event.currentTarget;
