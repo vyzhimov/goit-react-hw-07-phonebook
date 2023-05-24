@@ -4,7 +4,7 @@ import { getContactsFilter } from 'redux/selectors';
 import { FilterWrapper, FilterLabel, FilterInput } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
 
-const Filter = ({ value, onChange }) => {
+const Filter = () => {
   const filteredValue = useSelector(getContactsFilter);
   const dispatch = useDispatch();
 
