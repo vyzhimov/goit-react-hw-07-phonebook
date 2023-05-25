@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContactsList } from 'redux/selectors';
+import { selectContactsList } from 'redux/selectors';
 import { addContact } from 'redux/operations';
 
 import { SlUserFollow } from 'react-icons/sl';
@@ -17,7 +17,7 @@ export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
-  const { items } = useSelector(getContactsList);
+  const items = useSelector(selectContactsList);
 
   const handleInputChange = event => {
     const { name, value } = event.currentTarget;

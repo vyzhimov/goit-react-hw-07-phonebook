@@ -1,5 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { getContactsList, getContactsFilter } from 'redux/selectors';
+import {
+  selectIsLoading,
+  selectError,
+  selectFilteredContacts,
+} from 'redux/selectors';
 import { fetchContacts, deleteContact } from 'redux/operations';
 
 import IsLoading from 'components/IsLoading';
@@ -19,18 +23,13 @@ import { useEffect } from 'react';
 
 export default function ContactsList() {
   const dispatch = useDispatch();
-  const { items, isLoading, error } = useSelector(getContactsList);
-  const filteredValue = useSelector(getContactsFilter);
+  const filteredContacts = useSelector(selectFilteredContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
-
-  const filteredContacts = items.filter(
-    ({ name, phone }) =>
-      name.toLowerCase().includes(filteredValue.toLowerCase()) ||
-      phone.includes(filteredValue)
-  );
 
   const handleDeleteContact = id => {
     dispatch(deleteContact(id));
