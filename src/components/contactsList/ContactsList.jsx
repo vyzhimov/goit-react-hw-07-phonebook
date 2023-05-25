@@ -33,7 +33,6 @@ export default function ContactsList() {
 
   const handleDeleteContact = id => {
     dispatch(deleteContact(id));
-    console.log(id);
   };
 
   return (
